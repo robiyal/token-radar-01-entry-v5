@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — model v5</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Token Radar</h1>
+    <p class="sub">Pre-token protocols, ranked by what a token would be worth if the record stayed as it is. Snapshot 14 Nov 2026, DefiLlama.</p>
+  </div>
+  <div class="badge">model v5 &middot; growth + age &middot; spec radar5-spec v1</div>
+</header>
+
+<section class="strip" id="model-strip">
+  <strong>Value model:</strong>
+  <span class="formula">implied value = TVL &times; multiple &times; growth &times; maturity</span>
+  <span>multiple <b>0.246x</b> (median mcap/TVL of the snapshot&rsquo;s own live tokens)</span>
+  <span>growth = 1 + 0.5 &times; 7-day TVL change, clamped to [0.2, 2.0]</span>
+  <span>maturity = 0.75 + 0.25 &times; min(tokenless days / 365, 1)</span>
+  <span>cap: 20 &times; TVL</span>
+</section>
+
+<section class="heroes" id="heroes"></section>
+
+<section class="controls">
+  <input id="q" type="search" placeholder="Search name or slug&hellip;" aria-label="Search protocols">
+  <select id="cat" aria-label="Filter by category"><option value="">All categories</option></select>
+  <select id="sort" aria-label="Sort board">
+    <option value="rank">Sort: rank (implied value)</option>
+    <option value="tvl">Sort: TVL, high to low</option>
+    <option value="growth">Sort: 7-day growth, high to low</option>
+    <option value="age">Sort: tokenless age, old to new</option>
+    <option value="name">Sort: name A&ndash;Z</option>
+  </select>
+  <label class="check"><input type="checkbox" id="watch-only"> Watchlist only</label>
+  <span id="count" class="count"></span>
+</section>
+
+<main>
+  <section class="board-wrap">
+    <table id="board">
+      <thead><tr>
+        <th data-k="rank">#</th><th data-k="name">Protocol</th><th data-k="category">Category</th>
+        <th data-k="tvl">TVL</th><th data-k="growth">7-day</th><th data-k="age">Age</th>
+        <th data-k="implied">Implied value</th><th>G &times; A</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+
+  <aside class="detail" id="detail" aria-live="polite">
+    <h2>Protocol detail</h2>
+    <p class="muted">Select a row to see its full valuation, its 90% range, its launch odds and its farm plan.</p>
+  </aside>
+</main>
+
+<section class="valid" id="validation">
+  <h2>Validation — recomputed for model v5</h2>
+  <p id="val-summary" class="muted"></p>
+  <div class="tables">
+    <div><h3>Leave-one-out (live tokens)</h3><table id="loo"></table></div>
+    <div><h3>Ablation — what growth and age add</h3><table id="ablation"></table></div>
+    <div><h3>Walk-forward by listing year</h3><table id="walk"></table></div>
+    <div><h3>Launch odds by category</h3><table id="odds"></table></div>
+  </div>
+  <h3>32-variant selection (held-out split, even slugs train / odd slugs test)</h3>
+  <table id="variants"></table>
+  <p class="muted" id="variant-note"></p>
+</section>
+
+<section class="account">
+  <h2>Coverage — all 758 protocols accounted for</h2>
+  <p id="accounting" class="muted"></p>
+  <details>
+    <summary>Set-aside protocols (560) — every one with its reason</summary>
+    <table id="setaside"><thead><tr><th>Protocol</th><th>Reason set aside</th></tr></thead><tbody></tbody></table>
+  </details>
+</section>
+
+<footer>
+  <p>A protocol is described as recording no token, never as having none: its DefiLlama record may simply not carry one. Implied values are this entry&rsquo;s own claim, not a prediction that a token will launch, and not financial advice. Farm steps are actions, not a promise of an airdrop.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
